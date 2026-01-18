@@ -11,11 +11,19 @@ func main() {
 
 	count := flag.Int("count", 1, "number of passwords to generate")
 	flag.IntVar(count, "c", 1, "number of passwords to generate (shorthand)")
+
+	mode := flag.String("mode", "random", "generation mode: 'random' or 'seed'")
+	flag.StringVar(mode, "m", "random", "generation mode: 'random' or 'seed' (shorthand)")
+
 	flag.Parse()
 
 	if *count <= 0 {
 		log.Fatal("Error: count must be positive")
 	}
 
-	app.Run(*count)
+	if *mode != "random" && *mode != "seed" {
+		log.Fatal("Error: mode must be 'random' or 'seed'")
+	}
+
+	app.Run(*count, *mode)
 }
