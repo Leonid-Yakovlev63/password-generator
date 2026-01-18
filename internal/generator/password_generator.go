@@ -2,18 +2,26 @@ package generator
 
 import (
 	"math/rand"
+	"strings"
+
+	"github.com/tyler-smith/go-bip39"
 )
 
 type (
 	PasswordGenerator interface {
 		GeneratePassword() string
+		GenerateSeedPhrasePassword() string
 	}
 
-	passwordGenerator struct{}
+	passwordGenerator struct {
+		dictionary []string
+	}
 )
 
 func NewPasswordGenerator() PasswordGenerator {
-	return &passwordGenerator{}
+	return &passwordGenerator{
+		dictionary: bip39.GetWordList(),
+	}
 }
 
 func (pg *passwordGenerator) GeneratePassword() string {
@@ -30,4 +38,17 @@ func (pg *passwordGenerator) GeneratePassword() string {
 
 	return string(password)
 
+}
+
+func (pg *passwordGenerator) GenerateSeedPhrasePassword() string {
+
+	length := 12
+
+	words := make([]string, length)
+
+	for i := range words {
+		words[i] = pg.dictionary[rand.Intn(len(pg.dictionary))]
+	}
+
+	return strings.Join(words, "-")
 }
