@@ -6,8 +6,11 @@ import (
 	"github.com/Leonid-Yakovlev63/password-generator/internal/generator"
 )
 
-func Run() {
+func Run(count int) {
+
 	passwordGenerator := generator.NewPasswordGenerator()
 
-	fmt.Println(passwordGenerator.GeneratePassword())
+	for i := 0; i < count; i++ {
+		fmt.Println(passwordGenerator.GeneratePassword())
+	}
 }
